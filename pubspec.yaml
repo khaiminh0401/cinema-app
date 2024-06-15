@@ -19,6 +19,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_hooks: ^0.20.5
   http: ^1.1.0
+  flutter_splash_screen: ^3.0.0
 auth0_flutter: ^1.7.2
 auth_buttons: ^3.0.2
 dev_dependencies:
@@ -29,3 +30,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/Layer_1.png

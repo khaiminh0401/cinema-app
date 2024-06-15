@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:cinemaapp/network/uri_api.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:cinemaapp/network/uri_api.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,13 +9,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  get http => null;
 
   Future<void> login() async {
     var urlLogin = Uri.parse(BASEURL.apiLogin);
@@ -59,89 +56,82 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            // image: DecorationImage(
-            //   image: NetworkImage(
-            //     'img',
-            //   ),
-            //   fit: BoxFit.cover,
-            // ),
-            ),
-        child: Center(
-          child: Card(
-            margin: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.network(
-                      'logo',
-                      height: 100,
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/Layer_1.png',
+                height: 100,
+                width: 100,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Chào mừng!',
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(hintText: 'Email'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Vui lòng nhập email';
+                  }
+                  return null;
+                },
+                onSaved: (value) => email = value!,
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: passwordController,
+                decoration: InputDecoration(labelText: 'Mật khẩu'),
+                obscureText: true,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Vui lòng nhập mật khẩu';
+                  }
+                  return null;
+                },
+                onSaved: (value) => password = value!,
+              ),
+              SizedBox(height: 20),
+              Container(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    // Navigate to forgot password screen
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => ForgotPasswordPage(),
+                    //   ),
+                    // );
+                  },
+                  child: Text(
+                    "Quên mật khẩu?",
+                    style: TextStyle(
+                      color: Colors.grey,
                     ),
-                    Text(
-                      'Chào mừng!',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    TextFormField(
-                      controller: emailController,
-                      decoration: InputDecoration(hintText: 'Email'),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Vui lòng nhập email';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => email = value!,
-                    ),
-                    TextFormField(
-                      controller: passwordController,
-                      decoration: InputDecoration(labelText: 'Mật khẩu'),
-                      obscureText: true,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Vui lòng nhập mật khẩu';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => password = value!,
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           ForgotPasswordPage()),
-                          // );
-                        },
-                        child: Text(
-                          "Quên mật khẩu?",
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
-                          login();
-                        }
-                      },
-                      child: Text('Đăng nhập'),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    login();
+                  }
+                },
+                child: Text('Đăng nhập'),
+              ),
+            ],
           ),
         ),
       ),
